@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  selenium:
+    build:
+        context: .
+    ports:
+      - 4000:4000
+    volumes:
+      - ./src:/usr/src/app
+    #   use volumes to mount local codebase with docker vm codebase
+    # main advantage is local chanes are reflectd in vm code
