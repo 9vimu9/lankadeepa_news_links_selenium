@@ -6,9 +6,13 @@ from sites.TravelNews import TravelNews
 
 import mysql.connector
 from support.database.Connection import Connection
+from support.initiate.Starter import Starter
 
 
 if __name__ == '__main__':
+
+    #load essential components
+    Starter.start()
     
     # news = CelebrityNews()
     # news = TravelNews()

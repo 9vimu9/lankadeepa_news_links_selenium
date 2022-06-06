@@ -1,3 +1,4 @@
+import os
 import string
 import mysql.connector
 from mysql.connector import Error
@@ -13,11 +14,11 @@ class Connection:
     def __create(self):
         try:
             connection = mysql.connector.connect(
-                host = 'mydb', 
-                database='wiki_sinhala_paragraphs',
-                user = 'root', 
-                password = 'root', 
-                port = 3306
+                host = os.getenv('MY_SQL_HOST'), 
+                database=os.getenv('MY_SQL_DATABASE'),
+                user = os.getenv('MY_SQL_USER'), 
+                password = os.getenv('MY_SQL_PASSWORD'), 
+                port = os.getenv('MY_SQL_PORT')
                 )
             if connection.is_connected():
                 self.__connection = connection

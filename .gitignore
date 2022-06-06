@@ -1,2 +1,3 @@
 /src/geckodriver.log
 /src/sites/__pycache__
+/src/.env
