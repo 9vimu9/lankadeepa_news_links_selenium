@@ -2,6 +2,8 @@ version: '3'
 
 services:
   selenium:
+    links:
+      - db
     build:
         context: .
     ports:
@@ -10,3 +12,12 @@ services:
       - ./src:/usr/src/app
     #   use volumes to mount local codebase with docker vm codebase
     # main advantage is local chanes are reflectd in vm code
+  db:
+    container_name: mydb
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./src/db:/docker-entrypoint-initdb.d/:ro
