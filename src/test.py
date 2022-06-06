@@ -19,16 +19,9 @@ if __name__ == '__main__':
     # news = Featured()
     # news = TopStory()
     news = Foreign()
-    # print(news.getLinks())
+    articles = news.getLinks()
+    print((articles[0]).dic())
 
     
-    # conn = mysql.connector.connect(host = 'mydb', user = 'root', password = 'root', port = 3306)
-
-    # cursor = conn.cursor()
-    # databases = ("show databases")
-    # cursor.execute(databases)
-    # for (databases) in cursor:
-    #     print (databases[0])
-
-    result = Connection.query("select database();")
-    print(result)
+    # result = Connection.query("select database();")
+    # print(result)

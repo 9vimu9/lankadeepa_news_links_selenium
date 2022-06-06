@@ -7,8 +7,8 @@ from selenium.webdriver.common.by import By
 
 class Lankadeepa(NewsSite):
 
-    def __init__(self,base_url:string,last_index_page_id:int):
-        super().__init__(base_url,last_index_page_id)
+    def __init__(self,base_url:string,last_index_page_id:int,category:int):
+        super().__init__(base_url,last_index_page_id,category)
 
     def getLink(self,webElement:WebElement):
         return webElement.get_attribute("href")

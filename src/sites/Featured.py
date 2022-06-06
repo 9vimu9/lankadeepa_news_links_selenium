@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 class Featured(NewsSite):
 
     def __init__(self):
-        super().__init__("https://www.lankadeepa.lk/sunday/rasawitha/57",1)
+        super().__init__("https://www.lankadeepa.lk/sunday/rasawitha/57",1,2)
 
     def getLink(self,webElement:WebElement):
         return webElement.find_element_by_tag_name('a').get_attribute("href")

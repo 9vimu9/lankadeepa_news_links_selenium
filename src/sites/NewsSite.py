@@ -5,13 +5,16 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
 from selenium import webdriver
 
+from support.article.Article import Article
+
 
 
 
 class NewsSite(ABC):
-    def __init__(self,base_url:string,last_index_page_id:int):
+    def __init__(self,base_url:string,last_index_page_id:int,category:int):
         self.base_url = base_url
         self.last_index_page_id = last_index_page_id
+        self.category = category
     
     @abstractmethod
     def getLink(self,webElement:WebElement):
@@ -61,7 +64,11 @@ class NewsSite(ABC):
                 break
 
             for element in elements:
-                linkList.append(self.getLink(element))
+                title = ""
+                url = self.getLink(element)
+                category = self.category
+                article = Article(title,url,category)
+                linkList.append(article)
 
             
         return linkList
