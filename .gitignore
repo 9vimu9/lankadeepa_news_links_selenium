@@ -1,3 +1,7 @@
 /src/geckodriver.log
 /src/sites/__pycache__
 /src/.env
+/src/support/article/__pycache__
+/src/support/initiate/__pycache__
+/src/support/__pycache__
+/src/support/database/__pycache__
