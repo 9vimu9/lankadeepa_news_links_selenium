@@ -1,10 +1,11 @@
 from sites.CelebrityNews import CelebrityNews
 from sites.Featured import Featured
 from sites.Foreign import Foreign
+from sites.Knowledge import Knowledge
 from sites.TopStory import TopStory
 from sites.TravelNews import TravelNews
+from model.Article import Article
 
-import mysql.connector
 from support.database.Connection import Connection
 from support.initiate.Starter import Starter
 
@@ -18,10 +19,19 @@ if __name__ == '__main__':
     # news = TravelNews()
     # news = Featured()
     # news = TopStory()
-    news = Foreign()
-    articles = news.getLinks()
-    print((articles[0]).dic())
+    # news = Foreign()
+    # articles = news.store_articles()
+    # print((articles[0]).url)
+    # article_model  = Article()
+    # article_model.insert(articles[0])
 
     
     # result = Connection.query("select database();")
     # print(result)
+    # (TravelNews()).store_articles()
+    (CelebrityNews()).store_articles()
+    # (Knowledge()).store_articles()
+    # (Foreign()).store_articles()
+    # (TopStory()).store_articles()
+    # (Featured()).store_articles()
+  
