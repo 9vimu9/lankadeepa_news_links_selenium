@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 import os
 import string
+import time
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
 from selenium import webdriver
 
 from support.article.Article import Article
-
+from model.Article import Article as ArticleModal
 
 
 
@@ -43,21 +44,24 @@ class NewsSite(ABC):
 
         browser = webdriver.Firefox(options=firefox_options)
         browser.get(url)
+        time.sleep(3) #to fix Message: Failed to read marionette port issue
         return browser
     
 
-    def getLinks(self):
+    def getLinks(self,store_enabled:bool=False):
 
 
         linkList = []
-
-        page_numbers = [*range(30, self.last_index_page_id*30+1, 30)]
+        page_numbers = [*range(30, self.last_index_page_id*30, 30)]
         page_numbers.insert(0,0)
 
         for page_number in page_numbers:
+            
+
+            if page_number <= 80*30:# to not to create duplicate records
+                continue    
 
             new_url = self.base_url+"/"+str(page_number)
-
             elements = self.getElements(self.__getWebDriver(new_url))
 
             if len(elements) == 0:
@@ -68,7 +72,18 @@ class NewsSite(ABC):
                 url = self.getLink(element)
                 category = self.category
                 article = Article(title,url,category)
-                linkList.append(article)
 
+                if store_enabled:
+                    print(article.dic())
+                    self.__store_article(article)
+                    
+                linkList.append(article)
             
         return linkList
+    
+    def store_articles(self):
+        self.getLinks(True)
+
+
+    def __store_article(self,article:Article):
+        (ArticleModal()).insert(article)
