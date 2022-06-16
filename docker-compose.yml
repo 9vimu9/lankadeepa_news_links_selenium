@@ -6,10 +6,12 @@ services:
       - db
     build:
         context: .
+        shm_size: '2gb'
     ports:
       - 4000:4000
     volumes:
       - ./src:/usr/src/app
+    shm_size: '2gb'
     #   use volumes to mount local codebase with docker vm codebase
     # main advantage is local chanes are reflectd in vm code
   db:
