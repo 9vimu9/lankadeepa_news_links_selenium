@@ -22,8 +22,7 @@ class Connection:
                 )
             if connection.is_connected():
                 self.__connection = connection
-                cursor = connection.cursor()
-                self.__cursor = cursor
+                self.__cursor = connection.cursor()
 
         except Error as e:
             print("Error while connecting to MySQL", e)
@@ -38,10 +37,28 @@ class Connection:
     
 
     def execute(self,query:string):
-            self.__cursor.execute(query)
-            record =  self.__cursor.fetchall()
+        self.__cursor.execute(query)
+        record =  self.__cursor.fetchall()
+        self.__close()
+        return record
+
+    def insert_execute(self,table:string,key_value_pair:dict):
+
+        try:
+            placeholders = ', '.join(['%s'] * len(key_value_pair))
+            columns = ', '.join(key_value_pair.keys())
+            sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (table, columns, placeholders)
+            # print(sql)
+            # print(list(key_value_pair.values()))
+            self.__cursor.execute(sql, list(key_value_pair.values()))
+            self.__connection.commit()
             self.__close()
-            return record
+        except mysql.connector.IntegrityError as integrityError:
+            pass
+
+
+
+
 
 
 
@@ -49,6 +66,10 @@ class Connection:
     @staticmethod
     def query(query:string):
         return (Connection()).execute(query)
+
+    @staticmethod
+    def insert(table:string,key_value_pair:dict):
+        (Connection()).insert_execute(table,key_value_pair)
 
 
 
