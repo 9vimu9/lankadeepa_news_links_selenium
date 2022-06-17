@@ -7,6 +7,7 @@ CREATE TABLE `articles` (
   `url` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `category` smallint(5) unsigned DEFAULT NULL,
   `approved` smallint(5) unsigned NOT NULL DEFAULT '2',
+  `paragraphs_added` smallint(5) unsigned NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
