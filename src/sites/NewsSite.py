@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 from support.article.Article import Article
 from model.Article import Article as ArticleModal
+from support.paragraph.ParagraphsDTO import ParagraphsDTO
 
 
 
@@ -19,26 +20,18 @@ class NewsSite(ABC):
     
     @abstractmethod
     def getLink(self,webElement:WebElement):
-        """
-        This abstract method should return a string
-        :rtype: string
-        """
         pass
 
     @abstractmethod
-    def extract_paragraphs(self,webDriver:WebDriver):
-        """
-        This abstract method should return a string
-        :rtype: string
-        """
+    def extract_paragraphs(self,webDriver:WebDriver,article_id:int)-> ParagraphsDTO:
+        pass
+
+    @abstractmethod
+    def validate_paragraph(self,paragraph:string) -> bool:
         pass
 
     @abstractmethod
     def getElements(self,webDriver:WebDriver):
-        """
-        This abstract method should return a string
-        :rtype: string
-        """
         pass
 
     def __getWebDriver(self,url:string):
@@ -97,7 +90,8 @@ class NewsSite(ABC):
 
     def store_paragraphs(self,article_count:int):
         article = (ArticleModal()).get_fresh_article(self.category)
-        paragraphs = self.extract_paragraphs(self.__getWebDriver(article.url))
+        paragraphs = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
+        print(paragraphs.paragraphs)
 
 
     

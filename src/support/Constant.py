@@ -16,3 +16,6 @@ class Constant:
     #  91 for featured
     #1 equals to 30 articles
 
+    PARAGRAPH_CAN_CREATE_QUESTIONS = 1
+    PARAGRAPH_CANNOT_CREATE_QUESTIONS = 0
+
