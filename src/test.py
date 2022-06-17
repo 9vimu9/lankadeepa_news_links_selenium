@@ -25,11 +25,13 @@ if __name__ == '__main__':
     # article_model  = Article()
     # article_model.insert(articles[0])
 
-    
-    # result = Connection.query("select database();")
-    # print(result)
+    (Knowledge()).store_paragraphs(12)
+
+    # result = Connection.query("select * from articles limit 1;")
+    # print(result.description)
+    # print(result[0][2])
     # (TravelNews()).store_articles()
-    (CelebrityNews()).store_articles()
+    # (CelebrityNews()).store_articles()
     # (Knowledge()).store_articles()
     # (Foreign()).store_articles()
     # (TopStory()).store_articles()
