@@ -5,7 +5,7 @@ import time
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
 from selenium import webdriver
-
+from selenium.webdriver.firefox.webdriver import WebDriver
 from support.article.Article import Article
 from model.Article import Article as ArticleModal
 
@@ -26,7 +26,15 @@ class NewsSite(ABC):
         pass
 
     @abstractmethod
-    def getElements(self,webDriver):
+    def extract_paragraphs(self,webDriver:WebDriver):
+        """
+        This abstract method should return a string
+        :rtype: string
+        """
+        pass
+
+    @abstractmethod
+    def getElements(self,webDriver:WebDriver):
         """
         This abstract method should return a string
         :rtype: string
@@ -74,7 +82,6 @@ class NewsSite(ABC):
                 article = Article(title,url,category)
 
                 if store_enabled:
-                    print(article.dic())
                     self.__store_article(article)
                     
                 linkList.append(article)
@@ -87,3 +94,10 @@ class NewsSite(ABC):
 
     def __store_article(self,article:Article):
         (ArticleModal()).insert(article)
+
+    def store_paragraphs(self,article_count:int):
+        article = (ArticleModal()).get_fresh_article(self.category)
+        paragraphs = self.extract_paragraphs(self.__getWebDriver(article.url))
+
+
+    
