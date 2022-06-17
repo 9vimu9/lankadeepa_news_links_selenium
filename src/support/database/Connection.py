@@ -48,8 +48,6 @@ class Connection:
             placeholders = ', '.join(['%s'] * len(key_value_pair))
             columns = ', '.join(key_value_pair.keys())
             sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (table, columns, placeholders)
-            # print(sql)
-            # print(list(key_value_pair.values()))
             self.__cursor.execute(sql, list(key_value_pair.values()))
             self.__connection.commit()
             self.__close()
