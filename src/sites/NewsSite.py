@@ -103,13 +103,13 @@ class NewsSite(ABC):
 
     def __store_paragraph(self,article:Article):
         
-        paragraphs = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
+        paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
 
         paragraph_model = Paragraph()
-        for paragraph in paragraphs.paragraphs:
-            paragraph.paragraph = self.__sanitize_paragraph(paragraph.paragraph)
-            if self.validate_paragraph(paragraph):
-                paragraph_model.insert(paragraphs.article_id,paragraph.paragraph,paragraph.order)
+        for paragraphDTO in paragraphsDTO.paragraphs:
+            paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
+            if self.validate_paragraph(paragraphDTO):
+                paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
 
     
     def __sanitize_paragraph(self,paragraph:string)->str:
