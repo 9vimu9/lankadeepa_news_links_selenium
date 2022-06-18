@@ -50,7 +50,7 @@ ALTER TABLE articles MODIFY COLUMN url mediumtext  CHARACTER SET utf8mb4 COLLATE
 -- docker exec -i db /usr/bin/mysql -uroot --password=pass wiki_sinhala_paragraphs < backup.sql
 
 -- export
--- docker exec docker-tutorial_db_1 /usr/bin/mysqldump -u root --password=root wiki_sinhala_paragraphs > backup.sql
+-- docker exec mydb /usr/bin/mysqldump -u root --password=root wiki_sinhala_paragraphs > backup.sql
 
 -- mysql -uroot -proot
 -- use wiki_sinhala_paragraphs;
@@ -60,3 +60,6 @@ ALTER TABLE articles MODIFY COLUMN url mediumtext  CHARACTER SET utf8mb4 COLLATE
 
 -- to remove duplicate entries
 -- DELETE t1 FROM articles t1 JOIN articles t2 ON t2.url = t1.url AND t2.id < t1.id
+
+-- UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;
+-- UPDATE articles SET paragraphs_added = 0 WHERE 1=1;

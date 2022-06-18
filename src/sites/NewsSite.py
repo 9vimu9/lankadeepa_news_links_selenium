@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import os
 import string
+import sys
 import time
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
@@ -11,6 +12,7 @@ from support.article.Article import Article
 from model.Article import Article as ArticleModal
 from support.paragraph.ParagraphDTO import ParagraphDTO
 from support.paragraph.ParagraphsDTO import ParagraphsDTO
+import re
 
 
 
@@ -90,15 +92,27 @@ class NewsSite(ABC):
     def __store_article(self,article:Article):
         (ArticleModal()).insert(article)
 
-    def store_paragraphs(self,article_count:int):
-        article = (ArticleModal()).get_fresh_article(self.category)
+    def store_paragraphs(self,article_count:int=sys.maxsize):
+        for i in range(article_count):
+            article = (ArticleModal()).get_fresh_article(self.category)
+            if not article:
+                break
+            self.__store_paragraph(article)
+
+        
+
+    def __store_paragraph(self,article:Article):
+        
         paragraphs = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
 
         paragraph_model = Paragraph()
         for paragraph in paragraphs.paragraphs:
+            paragraph.paragraph = self.__sanitize_paragraph(paragraph.paragraph)
             if self.validate_paragraph(paragraph):
                 paragraph_model.insert(paragraphs.article_id,paragraph.paragraph,paragraph.order)
 
-
-
     
+    def __sanitize_paragraph(self,paragraph:string)->str:
+        paragraph = re.sub(r'^https?:\/\/.*[\r\n]*', '', paragraph, flags=re.MULTILINE)
+        paragraph.strip()
+        return paragraph

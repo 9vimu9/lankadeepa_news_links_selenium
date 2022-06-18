@@ -33,7 +33,7 @@ class Knowledge(Lankadeepa):
 
     def validate_paragraph(self, paragraph: ParagraphDTO) -> bool:
         
-        if len(paragraph.paragraph) < 250:
+        if len(paragraph.paragraph) < 100:
             return False
         
         return True

@@ -25,8 +25,9 @@ if __name__ == '__main__':
     # article_model  = Article()
     # article_model.insert(articles[0])
 
-    (Knowledge()).store_paragraphs(12)
-
+    (Knowledge()).store_paragraphs(5)
+    # t = Article().update_paragraphs_added_status(4516,1)
+    # print(t)
     # result = Connection.query("select * from articles limit 1;")
     # print(result.description)
     # print(result[0][2])

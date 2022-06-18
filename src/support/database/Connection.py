@@ -39,7 +39,7 @@ class Connection:
 
     def execute(self,query:string):
         self.__cursor.execute(query)
-        record =  self.__cursor.fetchall()
+        record =  self.__cursor.fetchall()#if no record return empty list
         self.__close()
         return record
 
@@ -51,14 +51,29 @@ class Connection:
             sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (table, columns, placeholders)
             self.__cursor.execute(sql, list(key_value_pair.values()))
             self.__connection.commit()
+            last_row_id =  self.__cursor.lastrowid
             self.__close()
-        except :
-            print(sys.exc_info())
+            return last_row_id
+            
+        except Exception as e: 
+            return False
 
+    def update_by_id_execute(
+        self,
+        table:string,
+        id:int,
+        key_value_pair:dict)->bool:
 
-
-
-
+        try:
+            updatables = ','.join(["`%s` = '%s'" % (key, value) for (key, value) in key_value_pair.items()])
+            sql = "UPDATE %s SET  %s  WHERE id = %s" % (table, updatables, id)
+            self.__cursor.execute(sql)
+            self.__connection.commit()
+            self.__close()
+            return True
+            
+        except Exception as e: 
+            return False
 
 
 
@@ -68,7 +83,12 @@ class Connection:
 
     @staticmethod
     def insert(table:string,key_value_pair:dict):
-        (Connection()).insert_execute(table,key_value_pair)
+        return (Connection()).insert_execute(table,key_value_pair)
+
+    @staticmethod
+    def update_by_id(table:string,id:int,key_value_pair:dict)->bool:
+        return (Connection()).update_by_id_execute(table,id,key_value_pair)
+
 
 
 

@@ -1,6 +1,10 @@
 import string
+from typing import Union
+from model.Article import Article
 from model.Model import Model
+from support.Constant import Constant
 from support.database.Connection import Connection
+from support.paragraph.ParagraphDTO import ParagraphDTO
 
 
 class Paragraph(Model):
@@ -11,9 +15,25 @@ class Paragraph(Model):
             'paragraph':paragraph,
             'order':order,
         }
-        Connection.insert("paragraphs",data)
+        last_id = Connection.insert("paragraphs",data)
+        if not last_id:
+            return False
+        paragraph = self.find(last_id)
+
+        if not paragraph:
+            return False
+        
+        Article().update_paragraphs_added_status(paragraph.article_id,Constant.ALL_THE_ARTICLE_PARAGRAPHS_ADDED)
+
+        
     
-   
+    def find(self,id:int)-> Union[ParagraphDTO,bool]:
+        query = "SELECT id,article_id,paragraph,`order` FROM paragraphs WHERE id = "+str(id)+" LIMIT 1";
+        paragraph = Connection.query(query)
+        if not paragraph:
+            return False
+        return ParagraphDTO(paragraph[0][2],paragraph[0][3],paragraph[0][1],paragraph[0][0])
+
 
 #      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 #   `article_id` bigint(20) unsigned NOT NULL,
