@@ -104,7 +104,7 @@ class NewsSite(ABC):
     def __store_paragraph(self,article:Article):
         
         paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
-
+        paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
         paragraph_model = Paragraph()
         for paragraphDTO in paragraphsDTO.paragraphs:
             paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
@@ -116,3 +116,42 @@ class NewsSite(ABC):
         paragraph = re.sub(r'^https?:\/\/.*[\r\n]*', '', paragraph, flags=re.MULTILINE)
         paragraph.strip()
         return paragraph
+
+    def __merge_paragraphs(self,paragraphsDTO:ParagraphsDTO)->ParagraphsDTO:
+
+        paragraph_max_character_threshold = 500
+        
+        paragraph_texts = []
+        paragraphs_list = []
+
+        for paragraphDTO in paragraphsDTO.paragraphs:
+             paragraph_texts.append(self.__sanitize_paragraph(paragraphDTO.paragraph))
+
+        charater_count = [len(sentence) for sentence in paragraph_texts]
+        total_character_count = sum(charater_count)
+
+        if total_character_count < paragraph_max_character_threshold and total_character_count > 100  :
+            paragraph = ' '.join(paragraph_texts)
+            paragraphsDTO.paragraphs = [ParagraphDTO(paragraph,0)]
+            return paragraphsDTO
+
+        current_character_count = 0
+        current_character_order = 0
+        current_paragraph = ''
+        print(paragraph_texts)
+        # raise SystemExit
+
+        for index,text in enumerate(paragraph_texts):
+            current_character_count += charater_count[index]
+            current_paragraph += text
+
+            if current_character_count > paragraph_max_character_threshold:
+                paragraphs_list.append(ParagraphDTO(current_paragraph,current_character_order))
+                current_character_order += 1
+                current_character_count = 0
+                current_paragraph = ''
+
+
+        paragraphsDTO.paragraphs = paragraphs_list
+
+        return paragraphsDTO
