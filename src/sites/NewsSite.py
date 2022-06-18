@@ -6,8 +6,10 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
 from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
+from model.Paragraph import Paragraph
 from support.article.Article import Article
 from model.Article import Article as ArticleModal
+from support.paragraph.ParagraphDTO import ParagraphDTO
 from support.paragraph.ParagraphsDTO import ParagraphsDTO
 
 
@@ -27,7 +29,7 @@ class NewsSite(ABC):
         pass
 
     @abstractmethod
-    def validate_paragraph(self,paragraph:string) -> bool:
+    def validate_paragraph(self,paragraph:ParagraphDTO) -> bool:
         pass
 
     @abstractmethod
@@ -91,7 +93,12 @@ class NewsSite(ABC):
     def store_paragraphs(self,article_count:int):
         article = (ArticleModal()).get_fresh_article(self.category)
         paragraphs = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
-        print(paragraphs.paragraphs)
+
+        paragraph_model = Paragraph()
+        for paragraph in paragraphs.paragraphs:
+            if self.validate_paragraph(paragraph):
+                paragraph_model.insert(paragraphs.article_id,paragraph.paragraph,paragraph.order)
+
 
 
     

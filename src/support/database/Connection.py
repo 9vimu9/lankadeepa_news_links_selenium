@@ -1,5 +1,6 @@
 import os
 import string
+import sys
 import mysql.connector
 from mysql.connector import Error
 
@@ -46,13 +47,13 @@ class Connection:
 
         try:
             placeholders = ', '.join(['%s'] * len(key_value_pair))
-            columns = ', '.join(key_value_pair.keys())
+            columns = ', '.join(['`{}`'.format(value) for value in key_value_pair.keys()])
             sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (table, columns, placeholders)
             self.__cursor.execute(sql, list(key_value_pair.values()))
             self.__connection.commit()
             self.__close()
-        except mysql.connector.IntegrityError as integrityError:
-            pass
+        except :
+            print(sys.exc_info())
 
 
 
