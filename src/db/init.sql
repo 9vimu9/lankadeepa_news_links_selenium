@@ -47,7 +47,7 @@ ALTER TABLE articles MODIFY COLUMN url mediumtext  CHARACTER SET utf8mb4 COLLATE
 -- SELECT id FROM articles ORDER BY id DESC LIMIT 1
 
 -- import
--- docker exec -i db /usr/bin/mysql -uroot --password=pass wiki_sinhala_paragraphs < backup.sql
+-- docker exec -i mydb /usr/bin/mysql -uroot --password=root wiki_sinhala_paragraphs < backup.sql
 
 -- export
 -- docker exec mydb /usr/bin/mysqldump -u root --password=root wiki_sinhala_paragraphs > backup.sql
