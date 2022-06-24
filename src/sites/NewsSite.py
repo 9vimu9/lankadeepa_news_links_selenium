@@ -21,6 +21,7 @@ class NewsSite(ABC):
         self.base_url = base_url
         self.last_index_page_id = last_index_page_id
         self.category = category
+        self.driver = self.__initiate_web_driver()
     
     @abstractmethod
     def getLink(self,webElement:WebElement):
@@ -39,6 +40,11 @@ class NewsSite(ABC):
         pass
 
     def __getWebDriver(self,url:string):
+        self.driver.get(url)
+        time.sleep(10) #to fix Message: Failed to read marionette port issue
+        return self.driver
+
+    def __initiate_web_driver(self)->WebDriver:
 
         firefox_options = firefox.options.Options()
         firefox_options.add_argument('--headless')
@@ -48,11 +54,7 @@ class NewsSite(ABC):
         firefox_options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'text/csv')
         firefox_options.binary_location = '/opt/firefox/firefox'
 
-        browser = webdriver.Firefox(options=firefox_options)
-        browser.get(url)
-        time.sleep(3) #to fix Message: Failed to read marionette port issue
-        return browser
-    
+        return webdriver.Firefox(options=firefox_options)
 
     def getLinks(self,store_enabled:bool=False):
 
