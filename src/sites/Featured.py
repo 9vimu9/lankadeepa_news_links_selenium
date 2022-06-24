@@ -3,9 +3,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 from support.Constant import Constant
 
-from support.Constant import Constant
 from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.common.by import By
 
 from support.paragraph.ParagraphDTO import ParagraphDTO
 from support.paragraph.ParagraphsDTO import ParagraphsDTO
