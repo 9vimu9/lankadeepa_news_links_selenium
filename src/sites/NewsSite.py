@@ -41,6 +41,7 @@ class NewsSite(ABC):
     def __getWebDriver(self,url:string):
 
         firefox_options = firefox.options.Options()
+        firefox_options.add_argument('--headless')
         firefox_options.set_preference('browser.download.folderList', 2)
         firefox_options.set_preference('browser.download.manager.showWhenStarting', False)
         firefox_options.set_preference('browser.download.dir', os.getcwd())
@@ -98,6 +99,7 @@ class NewsSite(ABC):
             if not article:
                 break
             self.__store_paragraph(article)
+            print(i)
 
         
 
@@ -138,7 +140,7 @@ class NewsSite(ABC):
         current_character_count = 0
         current_character_order = 0
         current_paragraph = ''
-        print(paragraph_texts)
+        #print(paragraph_texts)
         # raise SystemExit
 
         for index,text in enumerate(paragraph_texts):
