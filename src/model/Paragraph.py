@@ -15,6 +15,7 @@ class Paragraph(Model):
             'paragraph':paragraph,
             'order':order,
         }
+        print(data)
         last_id = Connection.insert("paragraphs",data)
         if not last_id:
             return False

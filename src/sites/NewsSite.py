@@ -128,6 +128,8 @@ class NewsSite(ABC):
         paragraphs_list = []
 
         for paragraphDTO in paragraphsDTO.paragraphs:
+             if not self.validate_paragraph(paragraphDTO):
+                 continue
              paragraph_texts.append(self.__sanitize_paragraph(paragraphDTO.paragraph))
 
         charater_count = [len(sentence) for sentence in paragraph_texts]
