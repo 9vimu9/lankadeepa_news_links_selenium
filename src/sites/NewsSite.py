@@ -105,15 +105,17 @@ class NewsSite(ABC):
         
 
     def __store_paragraph(self,article:Article):
+        try:
         
-        paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
-        paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
-        paragraph_model = Paragraph()
-        for paragraphDTO in paragraphsDTO.paragraphs:
-            paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
-            if self.validate_paragraph(paragraphDTO):
-                paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
-
+            paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
+            paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
+            paragraph_model = Paragraph()
+            for paragraphDTO in paragraphsDTO.paragraphs:
+                paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
+                if self.validate_paragraph(paragraphDTO):
+                    paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
+        except:
+            pass
     
     def __sanitize_paragraph(self,paragraph:string)->str:
         paragraph = re.sub(r'^https?:\/\/.*[\r\n]*', '', paragraph, flags=re.MULTILINE)
