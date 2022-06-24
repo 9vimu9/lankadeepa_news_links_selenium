@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 import os
 import string
 import sys
-import time
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
 from selenium import webdriver
@@ -117,7 +116,7 @@ class NewsSite(ABC):
                 paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
                 if self.validate_paragraph(paragraphDTO):
                     paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
-        except webdriver.common.exceptions.NoSuchElementException:
+        except:
             pass
 
     
