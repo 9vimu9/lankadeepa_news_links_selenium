@@ -26,7 +26,8 @@ if __name__ == '__main__':
     # article_model.insert(articles[0])
 
     # (Knowledge()).store_paragraphs(1000)
-    (CelebrityNews()).store_paragraphs(1000)
+    # (CelebrityNews()).store_paragraphs(1000)
+    (Featured()).store_paragraphs(1000)
     # t = Article().update_paragraphs_added_status(4516,1)
     # result = Connection.query("select * from articles limit 1;")
     # (TravelNews()).store_articles()
