@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import os
 import string
 import sys
+import time
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import firefox
 from selenium import webdriver
@@ -20,7 +21,6 @@ class NewsSite(ABC):
         self.base_url = base_url
         self.last_index_page_id = last_index_page_id
         self.category = category
-        self.browser = self.__initiate_web_driver()
     
     @abstractmethod
     def getLink(self,webElement:WebElement):
@@ -40,12 +40,6 @@ class NewsSite(ABC):
 
     def __getWebDriver(self,url:string):
 
-        self.browser.get(url)
-        return self.browser
-    
-    
-    def __initiate_web_driver(self):
-
         firefox_options = firefox.options.Options()
         firefox_options.add_argument('--headless')
         firefox_options.set_preference('browser.download.folderList', 2)
@@ -55,6 +49,8 @@ class NewsSite(ABC):
         firefox_options.binary_location = '/opt/firefox/firefox'
 
         browser = webdriver.Firefox(options=firefox_options)
+        browser.get(url)
+        time.sleep(3) #to fix Message: Failed to read marionette port issue
         return browser
     
 
@@ -105,19 +101,18 @@ class NewsSite(ABC):
             self.__store_paragraph(article)
             print(i)
 
+
         
 
     def __store_paragraph(self,article:Article):
-        try:
-            paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
-            paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
-            paragraph_model = Paragraph()
-            for paragraphDTO in paragraphsDTO.paragraphs:
-                paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
-                if self.validate_paragraph(paragraphDTO):
-                    paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
-        except:
-            pass
+        
+        paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
+        paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
+        paragraph_model = Paragraph()
+        for paragraphDTO in paragraphsDTO.paragraphs:
+            paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
+            if self.validate_paragraph(paragraphDTO):
+                paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
 
     
     def __sanitize_paragraph(self,paragraph:string)->str:
@@ -146,7 +141,7 @@ class NewsSite(ABC):
         current_character_count = 0
         current_character_order = 0
         current_paragraph = ''
-        #print(paragraph_texts)
+        # print(paragraph_texts)
         # raise SystemExit
 
         for index,text in enumerate(paragraph_texts):
