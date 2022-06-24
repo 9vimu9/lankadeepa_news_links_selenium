@@ -109,14 +109,16 @@ class NewsSite(ABC):
         
 
     def __store_paragraph(self,article:Article):
-        
-        paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
-        paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
-        paragraph_model = Paragraph()
-        for paragraphDTO in paragraphsDTO.paragraphs:
-            paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
-            if self.validate_paragraph(paragraphDTO):
-                paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
+        try:
+            paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
+            paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
+            paragraph_model = Paragraph()
+            for paragraphDTO in paragraphsDTO.paragraphs:
+                paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
+                if self.validate_paragraph(paragraphDTO):
+                    paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
+        except webdriver.common.exceptions.NoSuchElementException:
+            pass
 
     
     def __sanitize_paragraph(self,paragraph:string)->str:
