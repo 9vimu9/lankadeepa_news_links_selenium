@@ -1,4 +1,3 @@
-import string
 from sites.Lankadeepa import Lankadeepa
 from support.Constant import Constant
 from selenium.webdriver.firefox.webdriver import WebDriver
