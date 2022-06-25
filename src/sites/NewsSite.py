@@ -99,8 +99,10 @@ class NewsSite(ABC):
     def store_paragraphs(self,article_count:int=sys.maxsize):
         for i in range(article_count):
             article = (ArticleModal()).get_fresh_article(self.category)
+
             if not article:
                 break
+            print(article.dic())
             self.__store_paragraph(article)
             print(i)
 
@@ -115,13 +117,13 @@ class NewsSite(ABC):
             paragraph_model = Paragraph()
             for paragraphDTO in paragraphsDTO.paragraphs:
                 paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
+                print(self.validate_paragraph(paragraphDTO))
                 if self.validate_paragraph(paragraphDTO):
                     paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
-        except Exception as e: 
-            print("Error while storing", e)
+        except : 
+            print("Error while storing", sys.exc_info()[0])
             ArticleModal().update_paragraphs_added_status(article.id,Constant.ERROR_DURING_PARAGRAPH_PROCESS)
-            pass
-    
+            pass 
     def __sanitize_paragraph(self,paragraph:string)->str:
         paragraph = re.sub(r'^https?:\/\/.*[\r\n]*', '', paragraph, flags=re.MULTILINE)
         paragraph.strip()
