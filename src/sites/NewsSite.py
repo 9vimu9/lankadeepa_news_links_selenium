@@ -117,6 +117,10 @@ class NewsSite(ABC):
             paragraphsDTO = self.extract_paragraphs(self.__getWebDriver(article.url),article.id)
             paragraphsDTO = self.__merge_paragraphs(paragraphsDTO)
             paragraph_model = Paragraph()
+            
+            if not paragraphsDTO.paragraphs:
+                raise Exception("no paragraph available after merge")
+
             for paragraphDTO in paragraphsDTO.paragraphs:
                 paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
 
