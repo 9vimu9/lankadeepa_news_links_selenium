@@ -117,9 +117,11 @@ class NewsSite(ABC):
             paragraph_model = Paragraph()
             for paragraphDTO in paragraphsDTO.paragraphs:
                 paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
-                print(self.validate_paragraph(paragraphDTO))
-                if self.validate_paragraph(paragraphDTO):
-                    paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
+
+                if not self.validate_paragraph(paragraphDTO):
+                    raise Exception("valiadtion error")
+                
+                paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
         except : 
             print("Error while storing", sys.exc_info()[0])
             ArticleModal().update_paragraphs_added_status(article.id,Constant.ERROR_DURING_PARAGRAPH_PROCESS)
