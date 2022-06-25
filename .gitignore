@@ -8,3 +8,6 @@
 /src/model/__pycache__
 /src/test.py
 /src/support/paragraph/__pycache__
+src/support/Slack/__pycache__/BaseSlack.cpython-38.pyc
+src/support/Slack/__pycache__/ParagraphSaved.cpython-38.pyc
+src/support/Slack/__pycache__/ParagraphSaveFailed.cpython-38.pyc

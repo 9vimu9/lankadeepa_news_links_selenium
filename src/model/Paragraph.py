@@ -3,6 +3,7 @@ from typing import Union
 from model.Article import Article
 from model.Model import Model
 from support.Constant import Constant
+from support.Slack.ParagraphSaved import ParagraphSaved
 from support.database.Connection import Connection
 from support.paragraph.ParagraphDTO import ParagraphDTO
 
@@ -18,14 +19,15 @@ class Paragraph(Model):
         print(data)
         last_id = Connection.insert("paragraphs",data)
         if not last_id:
-            return False
+            raise Exception("paragraph save failed")
         paragraph = self.find(last_id)
 
         if not paragraph:
-            return False
+            raise Exception("paragraph save failed")
         
+        ParagraphSaved(paragraph).send()
         Article().update_paragraphs_added_status(paragraph.article_id,Constant.ALL_THE_ARTICLE_PARAGRAPHS_ADDED)
-
+        return paragraph
         
     
     def find(self,id:int)-> Union[ParagraphDTO,bool]:

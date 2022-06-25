@@ -9,6 +9,8 @@ from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 from model.Paragraph import Paragraph
 from support.Constant import Constant
+from support.Slack.ParagraphSaveFailed import ParagraphSaveFailed
+from support.Slack.ParagraphSaved import ParagraphSaved
 from support.article.Article import Article
 from model.Article import Article as ArticleModal
 from support.paragraph.ParagraphDTO import ParagraphDTO
@@ -122,10 +124,11 @@ class NewsSite(ABC):
                     raise Exception("valiadtion error")
                 
                 paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
-        except : 
-            print("Error while storing", sys.exc_info()[0])
+        except Exception as exception : 
             ArticleModal().update_paragraphs_added_status(article.id,Constant.ERROR_DURING_PARAGRAPH_PROCESS)
+            ParagraphSaveFailed(exception).send()
             pass 
+        
     def __sanitize_paragraph(self,paragraph:string)->str:
         paragraph = re.sub(r'^https?:\/\/.*[\r\n]*', '', paragraph, flags=re.MULTILINE)
         paragraph.strip()
