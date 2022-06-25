@@ -8,6 +8,7 @@ from selenium.webdriver import firefox
 from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 from model.Paragraph import Paragraph
+from support.Constant import Constant
 from support.article.Article import Article
 from model.Article import Article as ArticleModal
 from support.paragraph.ParagraphDTO import ParagraphDTO
@@ -118,6 +119,7 @@ class NewsSite(ABC):
                     paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
         except Exception as e: 
             print("Error while storing", e)
+            Article().update_paragraphs_added_status(paragraphsDTO.article_id,Constant.ERROR_DURING_PARAGRAPH_PROCESS)
             pass
     
     def __sanitize_paragraph(self,paragraph:string)->str:
