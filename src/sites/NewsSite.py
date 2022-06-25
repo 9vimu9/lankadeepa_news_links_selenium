@@ -116,7 +116,8 @@ class NewsSite(ABC):
                 paragraphDTO.paragraph = self.__sanitize_paragraph(paragraphDTO.paragraph)
                 if self.validate_paragraph(paragraphDTO):
                     paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
-        except:
+        except Exception as e: 
+            print("Error while storing", e)
             pass
     
     def __sanitize_paragraph(self,paragraph:string)->str:
