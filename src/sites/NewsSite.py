@@ -119,7 +119,7 @@ class NewsSite(ABC):
                     paragraph_model.insert(paragraphsDTO.article_id,paragraphDTO.paragraph,paragraphDTO.order)
         except Exception as e: 
             print("Error while storing", e)
-            ArticleModal().update_paragraphs_added_status(paragraphsDTO.article_id,Constant.ERROR_DURING_PARAGRAPH_PROCESS)
+            ArticleModal().update_paragraphs_added_status(article.id,Constant.ERROR_DURING_PARAGRAPH_PROCESS)
             pass
     
     def __sanitize_paragraph(self,paragraph:string)->str:
